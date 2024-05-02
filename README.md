@@ -1,5 +1,3 @@
-Here's a draft for your `README.md` file for the Snowflake DBML Generator project. This README provides an overview of the project, installation instructions, usage examples, and other necessary details for users and potential contributors.
-
 # Snowflake DBML Generator
 
 The Snowflake DBML Generator is an open-source tool designed to convert Snowflake database schemas into Database Markup Language (DBML) files. This allows users to easily generate ER diagrams and maintain comprehensive documentation of their database structures, making it an invaluable resource for data engineers, analysts, ML engineers, and other data practitioners who need to visualize and document their database schemas.
