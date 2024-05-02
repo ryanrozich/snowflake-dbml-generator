@@ -15,7 +15,7 @@ snowflake-dbml --interactive
 
 ## Examples
 
-The following examples demonstrate the Snowflake DBML Generator in action using Snowflake the [Sample Data Sets](https://docs.snowflake.com/en/user-guide/sample-data) in Snowflake.
+The following examples demonstrate the Snowflake DBML Generator in action using  [Sample Data Sets](https://docs.snowflake.com/en/user-guide/sample-data) from Snowflake, and generating the visuals in [dbdiagram.io](https://dbdiagram.io/).
 
 ### 1. Sample TPCH SF100 Dataset
 
