@@ -1,0 +1,21 @@
+{
+    "table-primary-keys": {
+        "schema1.dim_table1": {
+            "natural_key": ["entity1_name"],
+            "primary_key": {
+                "column": "ID",
+                "reference_as": ["entity1_ID"]
+            }
+        },
+        "schema2.dim_table2": {
+            "natural_key": ["entity2_name", "other_id"],
+            "primary_key": {
+                "column": "ID",
+                "reference_as": ["entity2_ID"]
+            }
+        },
+        "schema1.dim_table3": {
+            "natural_key": ["enety3_name"]
+        }
+    }
+}
