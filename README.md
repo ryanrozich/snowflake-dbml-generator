@@ -103,8 +103,8 @@ Below is a table listing the available configuration parameters, their correspon
 |--------------------------|------------------------------------------------------|---------------------------------------|
 | `SNOWFLAKE_USER`         | Your Snowflake user name.                            | `--user <snowflake-username>`         |
 | `SNOWFLAKE_PASSWORD`     | Your Snowflake password.                             | `--password <snowflake-password>`     |
-| `SNOWFLAKE_ACCOUNT`      | Your Snowflake account identifier.                   | `--account <snowflake-account>`       |
-| `SNOWFLAKE_WAREHOUSE`    | Your Snowflake warehouse. See [Snowflake documentation](https://docs.snowflake.com/en/user-guide/admin-account-identifier.html#non-vps-account-locator-formats-by-cloud-platform-and-region) for formatting references. | `--warehouse <snowflake-warehouse>`   |
+| `SNOWFLAKE_ACCOUNT`      | Your Snowflake account identifier. See [Snowflake documentation](https://docs.snowflake.com/en/user-guide/admin-account-identifier.html#non-vps-account-locator-formats-by-cloud-platform-and-region) for how to find your account id.                   | `--account <snowflake-account>`       |
+| `SNOWFLAKE_WAREHOUSE`    | Your Snowflake warehouse. | `--warehouse <snowflake-warehouse>`   |
 | `SNOWFLAKE_DATABASE`     | Your Snowflake database name.                        | `--database <snowflake-database>`     |
 | `SNOWFLAKE_ROLE`         | Your Snowflake role.                                 | `--role <snowflake-role>`             |
 | `INCLUDED_SCHEMAS`*      | Comma-separated list of schemas to include.          | `--included-schemas <schema-list>`    |
