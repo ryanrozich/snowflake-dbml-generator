@@ -175,10 +175,12 @@ This configuration approach provides a flexible way to ensure that your generate
 
 ### Generating DBML
 
-To generate a DBML file:
+To generate a DBML file, create an `.env` file with your Snowflake credentials and configuration parameters and (optionally) a config.json file with your primary and foreign key hints. 
+
+Then run the following command to generate the DBML output file:
 
 ```bash
-snowflake-dbml --config config.json > output.dbml
+snowflake-dbml --config-file config.json > output.dbml
 ```
 
 ## Contributing
