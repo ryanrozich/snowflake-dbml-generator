@@ -1,6 +1,33 @@
 # Snowflake DBML Generator
 
-The Snowflake DBML Generator is an open-source tool designed to convert Snowflake database schemas into Database Markup Language (DBML) files. This allows users to easily generate ER diagrams and maintain comprehensive documentation of their database structures, making it an invaluable resource for data engineers, analysts, ML engineers, and other data practitioners who need to visualize and document their database schemas.
+The Snowflake DBML Generator is an open-source tool for easily transforming Snowflake database schemas into [DBML (Database Markup Language)](https://dbml.dbdiagram.io/home/). It enables quick visualization and documentation of database structures. These diagrams can be uploaded to tool such as [dbdiagram.io](https://dbdiagram.io/) or [dbdocs.io](https://dbdocs.io/) for quick visualization. 
+
+Ideal for data engineers, analysts, and ML engineers, this tool simplifies the creation of ER diagrams and helps maintain clear, accurate database documentation—streamlining database management and collaboration.
+
+## Quick Start
+
+```bash
+pip install snowflake-dbml-generator
+snowflake-dbml --interactive
+```
+
+## Examples
+
+The following examples demonstrate the Snowflake DBML Generator in action using Snowflake the [Sample Data Sets](https://docs.snowflake.com/en/user-guide/sample-data) in Snowflake.
+
+### 1. Sample TPCH SF100 Dataset
+
+* View on dbdiagram.io: [ER Diagram : TPCH SF100](https://dbdiagram.io/d/snowflake_sample-TPCH_SF100-6631d8395b24a634d03a1d8e)
+* Dataset docs in Snowflake: [Docs: Sample TPCH SF100](https://docs.snowflake.com/en/user-guide/sample-data-tpch.html)
+
+[![SVG of dbdiagram for TPCH SF100 Dataset](docs/images/dbdocs_Sample_TPCH_SF100.svg)](https://dbdiagram.io/d/snowflake_sample-TPCH_SF100-6631d8395b24a634d03a1d8e)
+
+### 2. Sample TPCDS SF100TCL Dataset
+
+* View on dbdiagram.io: [ER Diagram: TPCH SF1](https://dbdiagram.io/d/snowflake_sample-tpcds_sf100tcl-6631078d5b24a634d02fbd57)
+* Dataset docs in Snowflake: [Docs: Sample TPCDS SF100TCL](https://docs.snowflake.com/en/user-guide/sample-data-tpcds.html)
+
+[![SVG of dbdiagram for TPCH SF1 Dataset](docs/images/dbdocs_Sample_TPCDS_SF100TCL.svg)](https://dbdiagram.io/d/snowflake_sample-tpcds_sf100tcl-6631078d5b24a634d02fbd57)
 
 ## Features
 
@@ -10,6 +37,8 @@ The Snowflake DBML Generator is an open-source tool designed to convert Snowflak
 - **Customizable Visualization**: Customize the appearance of generated DBML files with configurable color schemes for different types of tables.
 - **SQL Comments Extraction**: Extract SQL table and column comments and convert them into DBML notes, enhancing the documentation within the generated DBML.
 - **Table Statistics**: Extract and include table statistics such as row count and size in bytes as part of the table notes in the DBML, providing a quick reference to the table's scale and usage.
+
+
 
 ## Installation
 
