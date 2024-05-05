@@ -24,6 +24,10 @@ jobs:
       - name: Install pip correct version
         run: python -m ensurepip --upgrade
 
+      - name: Install Python packaging tools
+        run: |
+          pip install --upgrade pip setuptools wheel
+
       - name: Install bumpversion
         run: pip install bump2version
         # This step installs the bump2version package
@@ -63,10 +67,6 @@ jobs:
           git push
           git push --tags
         # This step performs the version bump and pushes the changes to the repository
-
-      - name: Install Python packaging tools
-        run: |
-          pip install --upgrade pip setuptools wheel
 
       - name: Install project dependencies
         run: pip install -r requirements.txt
