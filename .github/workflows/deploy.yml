@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Important to fetch all history for version tags and commits
         # This step checks out the repository code
 
       - name: Set up Python
@@ -55,6 +57,7 @@ jobs:
           bump2version ${{ steps.version-bump-type.outputs.type }} --config-file .bumpversion.cfg
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git push
           git push --tags
         # This step performs the version bump and pushes the changes to the repository
 
