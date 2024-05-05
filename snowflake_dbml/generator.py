@@ -384,7 +384,7 @@ def main():
             'role': args.role or config['role'],
         }
 
-        primary_key_hints = load_primary_key_hints(args.config_file or config.get('config-file'))
+        primary_key_hints = load_primary_key_hints(args.config_file or config.get('config_file'))
 
         if args.included_schemas:
             config['included_schemas'] = args.included_schemas

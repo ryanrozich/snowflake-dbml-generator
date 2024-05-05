@@ -21,7 +21,7 @@ def load_config():
         'database': os.getenv('SNOWFLAKE_DATABASE'),
         'role': os.getenv('SNOWFLAKE_ROLE'),
 
-        'primary_key_hints_path': os.getenv('PRIMARY_KEY_HINTS_PATH'),
+        'config_file': os.getenv('CONFIG_FILE'),
 
         'included_schemas': os.getenv('INCLUDED_SCHEMAS'),  # Schemas to include
         'excluded_schemas': os.getenv('EXCLUDED_SCHEMAS'),  # Schemas to exclude

@@ -30,4 +30,3 @@ For detailed usage of each command-line option, use the help command:
 ```bash
 snowflake-dbml --help
 ```
-```
