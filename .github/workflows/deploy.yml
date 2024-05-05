@@ -68,6 +68,10 @@ jobs:
           git push --tags
         # This step performs the version bump and pushes the changes to the repository
 
+      - name: Check updated version
+        run: cat snowflake_dbml/version.py
+        # This step checks the updated version in the version.py file
+
       - name: Install project dependencies
         run: pip install -r requirements.txt
 
