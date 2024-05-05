@@ -1,0 +1,63 @@
+name: Auto Version Bumping
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install bumpversion
+        run: pip install bump2version
+
+      - name: List changes
+        id: list-changes
+        run: |
+          git diff --name-only HEAD^ HEAD > changes.txt
+          echo "::set-output name=status::$(grep -qvE '^docs/|^README.md|^\.env\.sample$|^config\.json\.sample$|^\.github/workflows/|\.bumpversion\.cfg$' changes.txt && echo 'code' || echo 'docs')"
+
+      - name: Get last commit message
+        id: get-commit-message
+        run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
+
+      - name: Determine version bump type
+        if: steps.list-changes.outputs.status == 'code'
+        id: version-bump-type
+        run: |
+          echo "Commit message: ${{ steps.get-commit-message.outputs.message }}"
+          if echo "${{ steps.get-commit-message.outputs.message }}" | grep -q "MAJOR:"; then
+            echo "::set-output name=type::major"
+          elif echo "${{ steps.get-commit-message.outputs.message }}" | grep -q "MINOR:"; then
+            echo "::set-output name=type::minor"
+          else
+            echo "::set-output name=type::patch"
+          fi
+
+      - name: Bump version
+        if: steps.list-changes.outputs.status == 'code'
+        run: bumpversion ${{ steps.version-bump-type.outputs.type }}
+
+      - name: Push changes
+        if: steps.list-changes.outputs.status == 'code'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git push && git push --tags
+
+      - name: Build and publish
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          python setup.py sdist bdist_wheel
+          twine upload dist/*
