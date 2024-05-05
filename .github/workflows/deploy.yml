@@ -21,6 +21,9 @@ jobs:
           python-version: '3.x'
         # This step sets up the Python environment
 
+      - name: Install pip correct version
+        run: python -m ensurepip --upgrade
+
       - name: Install bumpversion
         run: pip install bump2version
         # This step installs the bump2version package
@@ -62,7 +65,8 @@ jobs:
         # This step performs the version bump and pushes the changes to the repository
 
       - name: Install Python packaging tools
-        run: python -m pip install --upgrade pip setuptools wheel
+        run: |
+          pip install --upgrade pip setuptools wheel
 
       - name: Install project dependencies
         run: pip install -r requirements.txt
