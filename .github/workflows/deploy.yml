@@ -24,7 +24,7 @@ jobs:
       - name: Determine changed files
         id: determine_changes
         run: |
-          git diff main@{1} main > changes.txt
+          git diff main HEAD~1 --name-only > changes.txt
           echo "::set-output name=status::$(grep -qvE '^docs/|^README.md|^\.env\.sample$|^config\.json\.sample$|^\.github/workflows/|\.bumpversion\.cfg$' changes.txt && echo 'code' || echo 'docs')"
 
       # Conditional step based on changes
