@@ -11,39 +11,37 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
+        # This step checks out the repository code
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
+        # This step sets up the Python environment
 
       - name: Install bumpversion
         run: pip install bump2version
-
-      # Determine changes
-      - name: Determine changed files
-        id: determine_changes
-        run: |
-          git diff main HEAD~1 --name-only > changes.txt
-          echo "::set-output name=status::$(grep -qvE '^docs/|^README.md|^\.env\.sample$|^config\.json\.sample$|^\.github/workflows/|\.bumpversion\.cfg$' changes.txt && echo 'code' || echo 'docs')"
+        # This step installs the bump2version package
 
       - name: Get last commit message
         id: get-commit-message
         run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
+        # This step retrieves the last commit message and sets it as an output
 
       - name: Determine version bump type
         id: version-bump-type
         run: |
           echo "Commit message: ${{ github.event.head_commit.message }}"
           if echo "${{ github.event.head_commit.message }}" | grep -q "\[skip version\]"; then
-            echo "::set-output name=type::skip"
+            echo "::set-output name=type::skip"  # Skip version bump
           elif echo "${{ github.event.head_commit.message }}" | grep -q "MAJOR:"; then
-            echo "::set-output name=type::major"
+            echo "::set-output name=type::major"  # Major version bump
           elif echo "${{ github.event.head_commit.message }}" | grep -q "MINOR:"; then
-            echo "::set-output name=type::minor"
+            echo "::set-output name=type::minor"  # Minor version bump
           else
-            echo "::set-output name=type::patch"
+            echo "::set-output name=type::patch"  # Patch version bump
           fi
+        # This step analyzes the commit message to determine the type of version bump
 
       - name: Version Bump and Push
         if: steps.version-bump-type.outputs.type != 'skip'
@@ -52,12 +50,14 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git push --tags
+        # This step performs the version bump and pushes the changes to the repository
 
       - name: Build and publish
-        if: steps.determine_changes.outputs.status == 'code'
+        if: steps.version-bump-type.outputs.type != 'skip'
         env:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           python setup.py sdist bdist_wheel
           twine upload dist/*
+        # This step builds and publishes the package if a version bump is required
