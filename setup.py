@@ -1,8 +1,10 @@
 from setuptools import setup, find_packages
+from snowflake_dbml.version import __version__
+
 
 setup(
     name='snowflake-dbml-generator',
-    version='0.1.0',
+    version=__version__,
     packages=find_packages(),
     entry_points={
         'console_scripts': [

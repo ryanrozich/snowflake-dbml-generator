@@ -8,23 +8,15 @@ from snowflake_dbml.generator import main  # Adjust the import path based on you
 if __name__ == "__main__":
     """Set up logging for the entire application."""
     # Create logger
+    print("** Starting Snowflake DBML generator.")
 
-    
-    logger = logging.getLogger('snowflake_dbml')
-    # Setup logging configuration
-    logger.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    file_handler = logging.FileHandler('snowflake-dbml.log')
-    file_handler.setFormatter(formatter)
-    stream_handler = logging.StreamHandler()
-    stream_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
-    logger.addHandler(stream_handler)
+    # Configure logging
+    logging.basicConfig(filename='app.log', level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-    logger.info("Starting Snowflake DBML generator.")
+    logging.info("Starting Snowflake DBML generator.")
 
     parser = argparse.ArgumentParser(description="Generate DBML files from Snowflake databases.")
     # Add more command-line arguments and options here.
     args = parser.parse_args()
     main()
-    logger.info("Snowflake DBML generator complete.")
+    logging.info("Snowflake DBML generator complete.")
