@@ -20,29 +20,16 @@ jobs:
       - name: Install bumpversion
         run: pip install bump2version
 
-      # Check if there are any commits before the current one
-      - name: Check for previous commit
-        id: check_commit
-        run: |
-          if git rev-parse HEAD^ > /dev/null 2>&1; then
-            echo "Has previous commit."
-            echo "::set-output name=has_prev_commit::true"
-          else
-            echo "No previous commit."
-            echo "::set-output name=has_prev_commit::false"
-          fi
-
       # Determine changes
       - name: Determine changed files
-        if: steps.check_commit.outputs.has_prev_commit == 'true'
         id: determine_changes
         run: |
-          git diff --name-only HEAD^ HEAD > changes.txt
+          git diff main@{1} main > changes.txt
           echo "::set-output name=status::$(grep -qvE '^docs/|^README.md|^\.env\.sample$|^config\.json\.sample$|^\.github/workflows/|\.bumpversion\.cfg$' changes.txt && echo 'code' || echo 'docs')"
 
       # Conditional step based on changes
       - name: Version Bump and Push
-        if: steps.check_commit.outputs.has_prev_commit == 'true' && steps.determine_changes.outputs.status == 'code'
+        if: steps.determine_changes.outputs.status == 'code'
         run: |
           bump2version patch --config-file .bumpversion.cfg
           git config --local user.email "action@github.com"
@@ -54,7 +41,7 @@ jobs:
         run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
 
       - name: Determine version bump type
-        if: steps.check_commit.outputs.has_prev_commit == 'true' && steps.determine_changes.outputs.status == 'code'
+        if: steps.determine_changes.outputs.status == 'code'
         id: version-bump-type
         run: |
           echo "Commit message: ${{ steps.get-commit-message.outputs.message }}"
@@ -67,18 +54,18 @@ jobs:
           fi
 
       - name: Bump version
-        if: steps.check_commit.outputs.has_prev_commit == 'true' && steps.determine_changes.outputs.status == 'code'
+        if: steps.determine_changes.outputs.status == 'code'
         run: bumpversion ${{ steps.version-bump-type.outputs.type }}
 
       - name: Push changes
-        if: steps.check_commit.outputs.has_prev_commit == 'true' && steps.determine_changes.outputs.status == 'code'
+        if: steps.determine_changes.outputs.status == 'code'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git push && git push --tags
 
       - name: Build and publish
-        if: steps.check_commit.outputs.has_prev_commit == 'true' && steps.determine_changes.outputs.status == 'code'
+        if: steps.determine_changes.outputs.status == 'code'
         env:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
