@@ -9,6 +9,7 @@ from pydbml import PyDBML, Database
 from pydbml.classes import Project, Table, Column, Reference, Note, TableGroup
 from snowflake.connector import DictCursor
 from snowflake_dbml.config import load_config, load_primary_key_hints, load_visualization_params
+from snowflake_dbml.version import __version__
 
 import logging
 
@@ -344,13 +345,30 @@ def save_config_to_env(config):
     else:
         print("Configuration not saved.")
 
+def mask_sensitive_info(conn_params):
+    """
+    Masks sensitive information in connection parameters.
+    """
+    masked_params = conn_params.copy()
+    if 'password' in masked_params:
+        masked_params['password'] = '****'
+    return masked_params
+
 
 def main():
+    # Configure logging
+    logging.basicConfig(filename='snowflake-dbml.log', level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
     # Setup Argument Parser with more options
     parser = argparse.ArgumentParser(
-        description="Reverese engineer ER diagrams files from Snowflake databases using DBML",
+        description=f"Reverese engineer ER diagrams files from Snowflake databases using DBML (version {__version__})",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter  # This will show default values in the help message
     )
+
+    # Version argument
+    parser.add_argument('-v', '--version', action='version', version=f'%(prog)s {__version__}',
+                        help="Show version number and exit.")
+
     parser.add_argument('--user', type=str, help='Snowflake user name')
     parser.add_argument('--password', type=str, help='Snowflake password')
     parser.add_argument('--account', type=str, help='Snowflake account identifier')
@@ -400,18 +418,24 @@ def main():
         if args.dynamic_table_color:
             visualization_params['dynamic_table_color'] = args.dynamic_table_color
 
-    logging.debug(f"Generating DBML")
-    logging.debug(f"Connection Params: {connection_params}")
-    logging.debug(f"Primary Key Hints: {primary_key_hints}")
-    logging.debug(f"Visualization Params: {visualization_params}")
+    logger.debug(f"Generating DBML")
+    masked_params = mask_sensitive_info(connection_params)
+    logger.debug(f"Connection Params: {masked_params}")
+    logger.debug(f"Primary Key Hints: {primary_key_hints}")
+    logger.debug(f"Visualization Params: {visualization_params}")
 
+    logger.info(f"Fetching data from Snowflake starting.")
     data = fetch_data(connection_params, config['included_schemas'], config['excluded_schemas'])
+    logger.info(f"Fetching data from Snowflake complete.")
 
-    logging.debug(f"Fetched data from Snowflake: {len(data)} rows")
+    # Logging the number of results for each key in the data dictionary
+    for key, value in data.items():
+        logger.info(f"Number of results for {key}: {len(value)}")
 
 
     dbml_output = generate_dbml(data, connection_params=connection_params, primary_key_hints=primary_key_hints, visualization_params=visualization_params)
     print(dbml_output)
+    logger.info("Snowflake DBML generator complete.")
 
 if __name__ == "__main__":
 
