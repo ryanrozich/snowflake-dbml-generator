@@ -23,6 +23,12 @@ jobs:
         run: pip install bump2version
         # This step installs the bump2version package
 
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+        # This step configures Git with a dummy email and name
+
       - name: Get last commit message
         id: get-commit-message
         run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
