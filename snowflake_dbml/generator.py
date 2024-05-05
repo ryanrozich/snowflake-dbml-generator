@@ -92,6 +92,22 @@ def fetch_data(connection_params, included_schemas=None, excluded_schemas=None):
     return data
 
 def generate_dbml(data, connection_params=None, primary_key_hints=None, visualization_params=None):
+    """
+    Generates a DBML representation of a Snowflake database based on the provided data.
+
+    Args:
+        data (dict): The data containing information about the tables, columns, primary keys, and foreign keys.
+        connection_params (dict, optional): The connection parameters for the Snowflake database. Defaults to None.
+        primary_key_hints (dict, optional): The primary key hints for inferring relationships. Defaults to None.
+        visualization_params (dict, optional): The visualization parameters for customizing the DBML output. Defaults to None.
+
+    Returns:
+        str: The DBML representation of the Snowflake database.
+
+    Raises:
+        None
+
+    """
     db = Database()
 
     # Load visualization params, primary key hints, and connection params
