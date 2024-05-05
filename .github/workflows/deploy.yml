@@ -33,7 +33,7 @@ jobs:
 
       - name: Get last commit message
         id: get-commit-message
-        run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
+        run: echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
         # This step retrieves the last commit message and sets it as an output
 
       - name: Determine version bump type
@@ -41,13 +41,13 @@ jobs:
         run: |
           echo "Commit message: ${{ github.event.head_commit.message }}"
           if echo "${{ github.event.head_commit.message }}" | grep -q "\[skip version\]"; then
-            echo "::set-output name=type::skip"  # Skip version bump
+            echo "type=skip" >> $GITHUB_OUTPUT # Skip version bump
           elif echo "${{ github.event.head_commit.message }}" | grep -q "MAJOR:"; then
-            echo "::set-output name=type::major"  # Major version bump
+            echo "type=major" >> $GITHUB_OUTPUT # Major version bump
           elif echo "${{ github.event.head_commit.message }}" | grep -q "MINOR:"; then
-            echo "::set-output name=type::minor"  # Minor version bump
+            echo "type=minor" >> $GITHUB_OUTPUT # Minor version bump
           else
-            echo "::set-output name=type::patch"  # Patch version bump
+            echo "type=patch" >> $GITHUB_OUTPUT # Patch version bump
           fi
         # This step analyzes the commit message to determine the type of version bump
 
